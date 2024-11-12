@@ -7,6 +7,10 @@ import UserPage from "./Pages/Userpage";
 import HomePage from "./Pages/Home";
 import AuthService from "./Components/AuthService";
 import Register from "./Components/Register";
+import Categories from "./Pages/Categories";
+import ViewCategories from "./Pages/ViewCategories";
+import AddProduct from "./Pages/AddProduct";
+import UserDetails from "./Pages/UserDetails";
 
 const App = () => {
   const role = AuthService.getCurrentUserRole();
@@ -30,6 +34,12 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
 
         <Route path="/register" element={<Register />} />
+
+        <Route path="categories" element={<Categories />} />
+
+        <Route path="/viewcategories" element={<ViewCategories />} />
+        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="/userdetails" element={<UserDetails />} />
       </Routes>
     </Router>
   );

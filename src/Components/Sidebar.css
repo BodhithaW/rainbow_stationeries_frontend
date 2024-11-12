@@ -1,0 +1,86 @@
+/* Sidebar.css */
+
+.sidebar {
+  background-color: #2d12b6;
+  color: rgb(188, 32, 32);
+  padding: 20px;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 250px;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  display: none; /* Hide the header title to save space */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 20px 0;
+}
+
+.sidebar li a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: #4b4b4b;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar li a.active {
+  background-color: #4b0082;
+  color: white;
+  border-radius: 8px;
+}
+
+.sidebar li a:hover {
+  background-color: #e1e4eb;
+  border-radius: 8px;
+}
+
+.sidebar li a i {
+  font-size: 20px;
+}
+
+/* Media query to make the sidebar a header on mobile */
+@media (max-width: 576px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar ul {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar li {
+    margin: 0;
+  }
+
+  .sidebar li a {
+    flex-direction: column;
+    font-size: 12px;
+    color: white; /* Adjust color for better visibility on header */
+  }
+
+  .sidebar li a i {
+    font-size: 16px;
+  }
+}
