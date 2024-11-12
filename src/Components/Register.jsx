@@ -56,7 +56,9 @@
 import React, { useState } from "react";
 import AuthService from "./AuthService";
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Button, Select, message } from "antd";
+import { Form, Input, Button, Select } from "antd";
+import Sidebar from "./SideBar";
+import "../Styles/AuthStyles.css";
 
 const { Option } = Select;
 
@@ -76,7 +78,8 @@ const Register = () => {
 
   return (
     <div className="auth-form">
-      <h2>Register</h2>
+      <Sidebar />
+      <h2>User Register</h2>
       {error && <p className="error">{error}</p>}
       <Form
         name="register"
@@ -114,10 +117,6 @@ const Register = () => {
             Add User
           </Button>
         </Form.Item>
-
-        <p>
-          Already have an account? <a href="/login">Login here</a>
-        </p>
       </Form>
     </div>
   );

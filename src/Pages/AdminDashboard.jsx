@@ -1,9 +1,11 @@
 import React from "react";
-import "./page.css";
+import "../Styles/page.css";
+import Sidebar from "../Components/SideBar";
 
 const Dashboard = () => {
   return (
     <div className="dashboard">
+      <Sidebar />
       <div className="summary">
         <div className="card categories">
           <h3>90</h3>

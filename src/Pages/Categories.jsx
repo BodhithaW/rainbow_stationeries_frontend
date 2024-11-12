@@ -92,10 +92,12 @@ import axios from "axios";
 import config from "../config";
 import Sidebar from "../Components/SideBar";
 import { useNavigate } from "react-router-dom";
-import "./page.css";
+
+import "../Styles/page.css";
 
 const AddCategory = () => {
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   // Handle form submission
@@ -108,6 +110,7 @@ const AddCategory = () => {
       });
       if (response.status === 200) {
         message.success("Category added successfully!");
+        setCategories([...categories, response.dara]);
         navigate("/viewcategories"); // Redirect to view categories page after adding
       }
     } catch (error) {
@@ -127,12 +130,6 @@ const AddCategory = () => {
 
         {/* Main content card */}
         <Col xs={24} sm={18} md={12} lg={10}>
-          <Button
-            onClick={() => navigate("/viewcategories")}
-            style={{ marginBottom: "20px", width: "100%" }}
-          >
-            View Categories
-          </Button>
           <Card
             title="Add Category"
             bordered={false}
@@ -165,6 +162,13 @@ const AddCategory = () => {
                 </Button>
               </Form.Item>
             </Form>
+
+            <Button
+              onClick={() => navigate("/viewcategories")}
+              style={{ marginBottom: "20px", width: "100%" }}
+            >
+              View Categories
+            </Button>
           </Card>
         </Col>
       </Row>

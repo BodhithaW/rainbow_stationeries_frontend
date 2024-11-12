@@ -41,8 +41,8 @@
 // export default Sidebar;
 
 import React from "react";
-import { Link } from "react-router-dom";
-import "./Sidebar.css";
+import { NavLink } from "react-router-dom"; // Use NavLink instead of Link
+import "../Styles/Sidebar.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const Sidebar = () => {
@@ -51,29 +51,32 @@ const Sidebar = () => {
       <h2>Admin Dashboard</h2>
       <ul>
         <li>
-          <Link to="/dashboard" className="active">
+          <NavLink
+            to="/dashboard"
+            activeClassName="active" // Automatically adds the "active" class
+          >
             <i className="fas fa-home"></i> Dashboard
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/register">
+          <NavLink to="/register" activeClassName="active">
             <i className="fas fa-user"></i> Users
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/categories">
+          <NavLink to="/categories" activeClassName="active">
             <i className="fas fa-list"></i> Categories
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/addproduct">
+          <NavLink to="/addproduct" activeClassName="active">
             <i className="fas fa-box"></i> Products
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/invoices">
+          <NavLink to="/invoices" activeClassName="active">
             <i className="fas fa-file-invoice"></i> Invoices
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import "./page.css";
+import "../Styles/page.css";
 // import logo from "./path/to/logo.png"; // Replace with your logo path
 
 const Header = () => {
