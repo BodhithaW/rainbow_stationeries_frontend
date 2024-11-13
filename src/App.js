@@ -13,6 +13,10 @@ import AddProduct from "./Pages/AddProduct";
 import UserDetails from "./Pages/UserDetails";
 import Dashboard from "./Pages/AdminDashboard";
 import UserManagement from "./Pages/UserManagement";
+import AddStore from "./Pages/Store/AddStore";
+import AddInvoice from "./Pages/Invoice/AddInvoice";
+import InvoiceList from "./Pages/Invoice/InvoiceList";
+import PendingInvoices from "./Pages/Invoice/PendingInvoices";
 
 const App = () => {
   const role = AuthService.getCurrentUserRole();
@@ -44,7 +48,12 @@ const App = () => {
         <Route path="/userdetails" element={<UserDetails />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="usermanagement" element={<UserManagement />} />
+        <Route path="/usermanagement" element={<UserManagement />} />
+
+        <Route path="/add-store" element={<AddStore />} />
+        <Route path="/add-invoices" element={<AddInvoice />} />
+        <Route path="/view-invoices" element={<InvoiceList />} />
+        <Route path="/pending-invoices" element={<PendingInvoices />} />
       </Routes>
     </Router>
   );
