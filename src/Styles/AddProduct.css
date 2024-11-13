@@ -98,6 +98,11 @@
     max-width: 300px;
     margin-left: -70px; /* Center the button */
   }
+  /* CSS for highlighting 'OUT' rows */
+.out-row {
+  background-color: #ffe6e6; /* Light red background for OUT entries */
+}
+
 }
 
 
