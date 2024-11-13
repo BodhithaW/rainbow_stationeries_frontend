@@ -1,5 +1,5 @@
 import React from "react";
-import "../Styles/page.css";
+import "../Styles/Page.css";
 import Sidebar from "../Components/SideBar";
 
 const Dashboard = () => {
