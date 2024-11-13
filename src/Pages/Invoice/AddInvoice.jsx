@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select, Card, message } from "antd";
 import axios from "axios";
-import { DeleteOutlined } from "@ant-design/icons";
 import config from "../../config";
 import Sidebar from "../../Components/SideBar";
-import "../../Styles/AddProduct.css";
-
-const { Option } = Select;
+import "../../Styles/Invoice.css";
 
 const AddInvoice = () => {
   const [loading, setLoading] = useState(false);
@@ -22,7 +18,7 @@ const AddInvoice = () => {
       const response = await axios.get(`${config.BASE_URL}/api/products`);
       setProducts(response.data);
     } catch (error) {
-      message.error("Failed to load products.");
+      alert("Failed to load products.");
     }
   };
 
@@ -62,14 +58,15 @@ const AddInvoice = () => {
   };
 
   // Submit invoice
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     const invoiceData = {
-      invoiceId: values.invoiceId,
-      invoiceCode: values.invoiceCode,
-      customerName: values.customerName,
-      customerNo: values.customerNo,
-      billingAddress: values.billingAddress,
+      invoiceId: 5000, // static initial ID, replace if needed
+      invoiceCode: e.target.invoiceCode.value,
+      customerName: e.target.customerName.value,
+      customerNo: e.target.customerNo.value,
+      billingAddress: e.target.billingAddress.value,
       invoiceTotal,
       invoiceItems,
     };
@@ -80,151 +77,184 @@ const AddInvoice = () => {
         invoiceData
       );
       if (response.status === 200) {
-        message.success("Invoice created successfully!");
-        // Reset form and state after submission
-        setInvoiceItems([{ productName: "", quantity: 1, unitPrice: 0, amount: 0 }]);
+        alert("Invoice created successfully!");
+        e.target.reset();
+        setInvoiceItems([
+          { productName: "", quantity: 1, unitPrice: 0, amount: 0 },
+        ]);
         setInvoiceTotal(0);
       }
     } catch (error) {
-      message.error("Failed to create invoice.");
+      alert("Failed to create invoice.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-        <Sidebar />
-    <div className="container">
-      <Card title="Create Invoice" bordered={false}>
-        <Form
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={{ invoiceId: 5000 }}
+    <div className="d-flex">
+      <Sidebar />
+      <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div
+          className="card shadow-sm p-4"
+          style={{ maxWidth: "600px", width: "100%" }}
         >
-          <Form.Item
-            label="Invoice Code"
-            name="invoiceCode"
-            rules={[{ required: true, message: "Invoice Code is required! ex: INXXXXX" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Customer Name"
-            name="customerName"
-            rules={[{ required: true, message: "Customer name is required!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Customer No"
-            name="customerNo"
-            rules={[{ required: true, message: "Customer number is required!" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Billing Address"
-            name="billingAddress"
-            rules={[
-              { required: true, message: "Billing address is required!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          {/* Dynamic Invoice Items */}
-          {invoiceItems.map((item, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <Form.Item
-                label="Product"
+          <h3 className="card-title mb-4 text-center">Create Invoice</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="invoiceCode" className="form-label">
+                Invoice Code
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="invoiceCode"
+                name="invoiceCode"
+                placeholder="e.g., INXXXXX"
                 required
-                name={[index, "productName"]}
-                rules={[{ required: true, message: "Select a product!" }]}
-              >
-                <Select
-                  value={item.productName}
-                  onChange={(value) =>
-                    handleInvoiceItemChange(index, "productName", value)
-                  }
-                  placeholder="Select product"
-                >
-                  {products.map((product) => (
-                    <Option key={product.id} value={product.productName}>
-                      {product.productName}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Quantity"
-                required
-                name={[index, "quantity"]}
-                rules={[{ required: true, message: "Quantity is required!" }]}
-              >
-                <Input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleInvoiceItemChange(index, "quantity", e.target.value)
-                  }
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="Unit Price"
-                required
-                name={[index, "unitPrice"]}
-                rules={[{ required: true, message: "Unit price is required!" }]}
-              >
-                <Input
-                  type="number"
-                  value={item.unitPrice}
-                  onChange={(e) =>
-                    handleInvoiceItemChange(index, "unitPrice", e.target.value)
-                  }
-                />
-              </Form.Item>
-
-              <Form.Item label="Amount">
-                <Input value={item.amount} disabled />
-              </Form.Item>
-
-              <Button
-                type="danger"
-                onClick={() => removeInvoiceItem(index)}
-                icon={<DeleteOutlined />}
-              >
-                Remove Item
-              </Button>
+              />
             </div>
-          ))}
+            <div className="mb-3">
+              <label htmlFor="customerName" className="form-label">
+                Customer Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="customerName"
+                name="customerName"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="customerNo" className="form-label">
+                Customer No
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="customerNo"
+                name="customerNo"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="billingAddress" className="form-label">
+                Billing Address
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="billingAddress"
+                name="billingAddress"
+                required
+              />
+            </div>
 
-          <Button
-            type="dashed"
-            onClick={addInvoiceItem}
-            block
-            style={{ marginBottom: "20px" }}
-          >
-            Add Invoice Item
-          </Button>
+            <h5 className="mb-3">Invoice Items</h5>
+            {invoiceItems.map((item, index) => (
+              <div key={index} className="border p-2 mb-2">
+                <div className="mb-2">
+                  <label className="form-label">Product</label>
+                  <select
+                    className="form-select"
+                    value={item.productName}
+                    onChange={(e) =>
+                      handleInvoiceItemChange(
+                        index,
+                        "productName",
+                        e.target.value
+                      )
+                    }
+                    required
+                  >
+                    <option value="">Select product</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.productName}>
+                        {product.productName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Quantity</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleInvoiceItemChange(
+                        index,
+                        "quantity",
+                        parseInt(e.target.value)
+                      )
+                    }
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Unit Price</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={item.unitPrice}
+                    onChange={(e) =>
+                      handleInvoiceItemChange(
+                        index,
+                        "unitPrice",
+                        parseFloat(e.target.value)
+                      )
+                    }
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label className="form-label">Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={item.amount.toFixed(2)}
+                    disabled
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  onClick={() => removeInvoiceItem(index)}
+                >
+                  Remove Item
+                </button>
+              </div>
+            ))}
 
-          <Form.Item label="Total Invoice Amount">
-            <Input value={invoiceTotal} disabled />
-          </Form.Item>
+            <button
+              type="button"
+              className="btn btn-outline-primary w-100 mb-3"
+              onClick={addInvoiceItem}
+            >
+              Add Invoice Item
+            </button>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              Submit Invoice
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+            <div className="mb-3">
+              <label className="form-label">Total Invoice Amount</label>
+              <input
+                type="text"
+                className="form-control"
+                value={invoiceTotal.toFixed(2)}
+                disabled
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit Invoice"}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
