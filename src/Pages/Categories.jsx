@@ -3,7 +3,7 @@ import axios from "axios";
 import config from "../config";
 import Sidebar from "../Components/SideBar";
 import { useNavigate } from "react-router-dom";
-import "../Styles/Page.css";
+import "../Styles/page.css";
 
 const AddCategory = () => {
   const [loading, setLoading] = useState(false);

@@ -111,13 +111,16 @@ const Register = () => {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button type="primary" color="9B7EBD" htmlType="submit" loading={loading} 
+              style={{ backgroundColor: "#9B7EBD", borderColor: "#9B7EBD", color: "black" }}>
                 Register User
               </Button>
             </Form.Item>
           </Form>
 
-          <Button className="view-btn" type="default" style={{ marginTop: "20px" }} onClick={handleOpenModal}>
+          <Button className="view-btn" type="default"
+           style={{ marginTop: "20px",  backgroundColor: "#EEEEEE", borderColor: "#9B7EBD", color: "black" }} 
+           onClick={handleOpenModal}>
             Manage Users
           </Button>
         </Card>
