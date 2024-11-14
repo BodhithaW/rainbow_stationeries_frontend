@@ -155,7 +155,7 @@ const handleSubmit = async (values) => {
             >
               <Input placeholder="Enter brand name" />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Category"
               name="categoryId"
               rules={[{ required: true, message: "Please select a category!" }]}
@@ -171,10 +171,34 @@ const handleSubmit = async (values) => {
                   </Option>
                 ))}
               </Select>
-            </Form.Item>
+            </Form.Item> */}
+            <Form.Item
+  label="Category"
+  name="categoryId"
+  rules={[{ required: true, message: "Please select a category!" }]}
+>
+  <Select
+    placeholder="Select a category"
+    loading={isFetchingCategories}
+    allowClear
+    showSearch // Enables search functionality
+    optionFilterProp="children" // Filters options based on text
+    filterOption={(input, option) =>
+      option.children.toLowerCase().includes(input.toLowerCase())
+    }
+  >
+    {categories.map((category) => (
+      <Option key={category.id} value={category.id}>
+        {category.categoryName}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+
 
             <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button type="primary" htmlType="submit" loading={loading}
+              style={{ backgroundColor: "#9B7EBD", borderColor: "#9B7EBD", color: "black" }}>
                 Add Product
               </Button>
             </Form.Item>
@@ -182,7 +206,7 @@ const handleSubmit = async (values) => {
           <Button
             className="view-btn"
             type="default"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px",  backgroundColor: "#EEEEEE", borderColor: "#9B7EBD", color: "black" }} 
             onClick={handleViewProducts}
           >
             View Products

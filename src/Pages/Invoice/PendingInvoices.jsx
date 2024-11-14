@@ -84,7 +84,7 @@ const PendingInvoices = () => {
               <p><strong>Customer:</strong> {invoice.customerName}</p>
               <p><strong>Address:</strong> {invoice.billingAddress}</p>
               <p><strong>Date:</strong> {new Date(invoice.createdAt).toLocaleString()}</p>
-              <p><strong>Total:</strong> ${invoice.invoiceTotal.toFixed(2)}</p>
+              <p><strong>Total:</strong> {invoice.invoiceTotal.toFixed(2)}</p>
               
               {/* Edit Icon to Change Status */}
               <EditOutlined
@@ -115,7 +115,7 @@ const PendingInvoices = () => {
           <p><strong>Customer Number:</strong> {selectedInvoice.customerNo}</p>
           <p><strong>Billing Address:</strong> {selectedInvoice.billingAddress}</p>
           <p><strong>Date:</strong> {new Date(selectedInvoice.createdAt).toLocaleString()}</p>
-          <p><strong>Invoice Total:</strong> ${selectedInvoice.invoiceTotal.toFixed(2)}</p>
+          <p><strong>Invoice Total:</strong> {selectedInvoice.invoiceTotal.toFixed(2)}</p>
           
           <h3>Invoice Items:</h3>
           {selectedInvoice.invoiceItems.map((item) => (
@@ -123,8 +123,8 @@ const PendingInvoices = () => {
               <p><strong>Product:</strong> {item.productName}</p>
               <p><strong>Category:</strong> {item.categoryName}</p>
               <p><strong>Quantity:</strong> {item.quantity}</p>
-              <p><strong>Unit Price:</strong> ${item.unitPrice.toFixed(2)}</p>
-              <p><strong>Amount:</strong> ${item.amount.toFixed(2)}</p>
+              <p><strong>Unit Price:</strong> {item.unitPrice.toFixed(2)}</p>
+              <p><strong>Amount:</strong> {item.amount.toFixed(2)}</p>
               <hr />
             </div>
           ))}

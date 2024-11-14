@@ -152,7 +152,7 @@ const columns = [
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 14 }}
           >
-            <Form.Item
+            {/* <Form.Item
               label="Product Name"
               name="productName"
               rules={[{ required: true, message: "Product name is required!" }]}
@@ -168,7 +168,32 @@ const columns = [
                   </Option>
                 ))}
               </Select>
-            </Form.Item>
+            </Form.Item> */}
+            <Form.Item
+  label="Product Name"
+  name="productName"
+  rules={[{  required: true, message: "Product name is required!"  }]}
+>
+  <Select
+    placeholder="Select a product"
+    loading={isFetchingProducts}
+    allowClear
+    showSearch // Enables search functionality
+    optionFilterProp="children" // Filters options based on text
+    filterOption={(input, option) =>
+      option.children.toLowerCase().includes(input.toLowerCase())
+    }
+  >
+    {products.map((product) => (
+      <Option key={product.id} value={product.productName}>
+        {product.productName}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+
+
+
             <Form.Item
               label="Quantity"
               name="quantity"
@@ -194,7 +219,8 @@ const columns = [
               </Select>
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button type="primary" htmlType="submit" loading={loading}
+              style={{ backgroundColor: "#9B7EBD", borderColor: "#9B7EBD", color: "black" }}>
                 Add Store Entry
               </Button>
             </Form.Item>
@@ -202,7 +228,7 @@ const columns = [
           <Button
             className="view-btn"
             type="default"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px",  backgroundColor: "#EEEEEE", borderColor: "#9B7EBD", color: "black" }} 
             onClick={handleViewStores}
           >
             View Store Data

@@ -44,16 +44,16 @@ const App = () => {
         <Route path="categories" element={<Categories />} />
 
         <Route path="/viewcategories" element={<ViewCategories />} />
-        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="product/addproduct" element={<AddProduct />} />
         <Route path="/userdetails" element={<UserDetails />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/usermanagement" element={<UserManagement />} />
 
-        <Route path="/add-store" element={<AddStore />} />
-        <Route path="/add-invoices" element={<AddInvoice />} />
-        <Route path="/view-invoices" element={<InvoiceList />} />
-        <Route path="/pending-invoices" element={<PendingInvoices />} />
+        <Route path="store/add-store" element={<AddStore />} />
+        <Route path="invoices/add-invoices" element={<AddInvoice />} />
+        <Route path="invoices/view-invoices" element={<InvoiceList />} />
+        <Route path="invoices/pending-invoices" element={<PendingInvoices />} />
       </Routes>
     </Router>
   );

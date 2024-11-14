@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Form, Input, Button, Select, Table, message } from "antd";
 import config from "../../config";
 import Sidebar from "../../Components/SideBar";
 import "../../Styles/Invoice.css";
+
+const { Option } = Select;
 
 const AddInvoice = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +21,7 @@ const AddInvoice = () => {
       const response = await axios.get(`${config.BASE_URL}/api/products`);
       setProducts(response.data);
     } catch (error) {
-      alert("Failed to load products.");
+      message.error("Failed to load products.");
     }
   };
 
@@ -58,15 +61,13 @@ const AddInvoice = () => {
   };
 
   // Submit invoice
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     setLoading(true);
     const invoiceData = {
-      invoiceId: 5000, // static initial ID, replace if needed
-      invoiceCode: e.target.invoiceCode.value,
-      customerName: e.target.customerName.value,
-      customerNo: e.target.customerNo.value,
-      billingAddress: e.target.billingAddress.value,
+      invoiceCode: values.invoiceCode,
+      customerName: values.customerName,
+      customerNo: values.customerNo,
+      billingAddress: values.billingAddress,
       invoiceTotal,
       invoiceItems,
     };
@@ -77,19 +78,95 @@ const AddInvoice = () => {
         invoiceData
       );
       if (response.status === 200) {
-        alert("Invoice created successfully!");
-        e.target.reset();
+        message.success("Invoice created successfully!");
+        // Reset form
         setInvoiceItems([
           { productName: "", quantity: 1, unitPrice: 0, amount: 0 },
         ]);
         setInvoiceTotal(0);
       }
     } catch (error) {
-      alert("Failed to create invoice.");
+      message.error("Failed to create invoice.");
     } finally {
       setLoading(false);
     }
   };
+
+  const columns = [
+    {
+      title: "Product Name",
+      dataIndex: "productName",
+      key: "productName",
+      render: (productName, record, index) => (
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          value={productName}
+          onChange={(value) => handleInvoiceItemChange(index, "productName", value)}
+          placeholder="Select Product"
+          filterOption={(input, option) =>
+            option.children.toLowerCase().includes(input.toLowerCase())
+          }
+        >
+          {products.map((product) => (
+            <Option key={product.productId} value={product.productName}>
+              {product.productName}
+            </Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+      render: (quantity, record, index) => (
+        <Input
+          type="number"
+          value={quantity}
+          onChange={(e) =>
+            handleInvoiceItemChange(index, "quantity", e.target.value)
+          }
+          style={{ width: 100 }}
+        />
+      ),
+    },
+    {
+      title: "Unit Price",
+      dataIndex: "unitPrice",
+      key: "unitPrice",
+      render: (unitPrice, record, index) => (
+        <Input
+          type="number"
+          value={unitPrice}
+          onChange={(e) =>
+            handleInvoiceItemChange(index, "unitPrice", e.target.value)
+          }
+          style={{ width: 100 }}
+        />
+      ),
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (amount) => amount.toFixed(2),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, __, index) => (
+        <Button
+          type="danger"
+          onClick={() => removeInvoiceItem(index)}
+          icon="delete"
+        >
+          Remove
+        </Button>
+      ),
+    },
+  ];
+  
 
   return (
     <div className="d-flex">
@@ -97,162 +174,79 @@ const AddInvoice = () => {
       <div className="container d-flex justify-content-center align-items-center min-vh-100">
         <div
           className="card shadow-sm p-4"
-          style={{ maxWidth: "600px", width: "100%" }}
+          style={{ maxWidth: "800px", width: "100%" }}
         >
           <h3 className="card-title mb-4 text-center">Create Invoice</h3>
-          <form onSubmit={handleSubmit}>
+          <Form onFinish={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="invoiceCode" className="form-label">
-                Invoice Code
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="invoiceCode"
+              <Form.Item
+                label="Invoice Code"
                 name="invoiceCode"
-                placeholder="e.g., INXXXXX"
-                required
-              />
+                rules={[{ required: true, message: "Invoice code is required!" }]}
+              >
+                <Input placeholder="e.g., INXXXXX" />
+              </Form.Item>
             </div>
             <div className="mb-3">
-              <label htmlFor="customerName" className="form-label">
-                Customer Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="customerName"
+              <Form.Item
+                label="Customer Name"
                 name="customerName"
-                required
-              />
+                rules={[{ required: true, message: "Customer name is required!" }]}
+              >
+                <Input />
+              </Form.Item>
             </div>
             <div className="mb-3">
-              <label htmlFor="customerNo" className="form-label">
-                Customer No
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="customerNo"
+              <Form.Item
+                label="Customer No"
                 name="customerNo"
-                required
-              />
+                rules={[{ required: true, message: "Customer number is required!" }]}
+              >
+                <Input />
+              </Form.Item>
             </div>
             <div className="mb-3">
-              <label htmlFor="billingAddress" className="form-label">
-                Billing Address
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="billingAddress"
+              <Form.Item
+                label="Billing Address"
                 name="billingAddress"
-                required
-              />
+                rules={[{ required: true, message: "Billing address is required!" }]}
+              >
+                <Input />
+              </Form.Item>
             </div>
 
             <h5 className="mb-3">Invoice Items</h5>
-            {invoiceItems.map((item, index) => (
-              <div key={index} className="border p-2 mb-2">
-                <div className="mb-2">
-                  <label className="form-label">Product</label>
-                  <select
-                    className="form-select"
-                    value={item.productName}
-                    onChange={(e) =>
-                      handleInvoiceItemChange(
-                        index,
-                        "productName",
-                        e.target.value
-                      )
-                    }
-                    required
-                  >
-                    <option value="">Select product</option>
-                    {products.map((product) => (
-                      <option key={product.id} value={product.productName}>
-                        {product.productName}
-                      </option>
-                    ))}
-                  </select>
+            <Table
+              dataSource={invoiceItems}
+              columns={columns}
+              rowKey="productName"
+              pagination={false}
+              footer={() => (
+                <div>
+                  <strong>Total: {invoiceTotal.toFixed(2)}</strong>
                 </div>
-                <div className="mb-2">
-                  <label className="form-label">Quantity</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      handleInvoiceItemChange(
-                        index,
-                        "quantity",
-                        parseInt(e.target.value)
-                      )
-                    }
-                    required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="form-label">Unit Price</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.unitPrice}
-                    onChange={(e) =>
-                      handleInvoiceItemChange(
-                        index,
-                        "unitPrice",
-                        parseFloat(e.target.value)
-                      )
-                    }
-                    required
-                  />
-                </div>
-                <div className="mb-2">
-                  <label className="form-label">Amount</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={item.amount.toFixed(2)}
-                    disabled
-                  />
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm"
-                  onClick={() => removeInvoiceItem(index)}
-                >
-                  Remove Item
-                </button>
-              </div>
-            ))}
-
-            <button
-              type="button"
-              className="btn btn-outline-primary w-100 mb-3"
+              )}
+            />
+            <Button
+              type="dashed"
+              icon="plus"
               onClick={addInvoiceItem}
+              style={{ marginBottom: 20 }}
             >
-              Add Invoice Item
-            </button>
+              Add Item
+            </Button>
 
-            <div className="mb-3">
-              <label className="form-label">Total Invoice Amount</label>
-              <input
-                type="text"
-                className="form-control"
-                value={invoiceTotal.toFixed(2)}
-                disabled
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary w-100"
-              disabled={loading}
-            >
-              {loading ? "Submitting..." : "Submit Invoice"}
-            </button>
-          </form>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                style={{ width: "100%" }}
+              >
+                Create Invoice
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     </div>
